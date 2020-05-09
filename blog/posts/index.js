@@ -22,22 +22,25 @@ app.post('/posts', async (req, res) => {
     id,
     title
   };
-  await axios.post('http://localhost:4005/events',{
+
+  await axios.post('http://event-bus-srv:4005/events', {
     type: 'PostCreated',
     data: {
       id,
       title
     }
   });
+
   res.status(201).send(posts[id]);
 });
 
 app.post('/events', (req, res) => {
   console.log('Received Event', req.body.type);
+
   res.send({});
 });
 
-app.listen(4001, () => {
-  console.log('version 55');
-  console.log('Listening on 4001');
+app.listen(4000, () => {
+  console.log('v55');
+  console.log('Listening on 4000');
 });
