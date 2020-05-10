@@ -21,11 +21,12 @@ router.post('/api/users/signup', [
 validateRequest,
 async (req: Request, res: Response) => {
   const { email, password } = req.body;
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw new BadRequestError('Email in use');
+  }
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      throw new BadRequestError('Email in use');
-    }
+
     const user = User.build({ email, password });
     await user.save();
     const userJwt = jwt.sign({
@@ -41,7 +42,6 @@ async (req: Request, res: Response) => {
   } catch (_) {
     throw new DatabaseConnectionError();
   }
-  
 });
 
 export { router as signupRouter };
