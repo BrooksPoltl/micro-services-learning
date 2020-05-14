@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
-metadata: 
+metadata:
   name: client-depl
-spec: 
+spec:
   replicas: 1
   selector:
     matchLabels:
       app: client
-    template: 
-      metadata:
-        labels:
-          app: client
-      spec:
-        containers:
-          - name: client
-            image: brookspoltl/ticket-client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: brookspoltl/ticket-client
 ---
 apiVersion: v1
 kind: Service
-metadata: 
+metadata:
   name: client-srv
 spec:
-  selector: 
+  selector:
     app: client
   ports:
     - name: client

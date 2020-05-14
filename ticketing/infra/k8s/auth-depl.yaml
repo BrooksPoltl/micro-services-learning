@@ -15,7 +15,7 @@ spec:
       containers:
         - name: auth
           image: brookspoltl/auth
-          env: 
+          env:
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:

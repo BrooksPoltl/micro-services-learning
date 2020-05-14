@@ -1,4 +1,4 @@
-import request  from 'supertest';
+import request from 'supertest';
 import { app } from '../../app';
 
 it('clears the cookie after signing out', async () => {
@@ -7,8 +7,9 @@ it('clears the cookie after signing out', async () => {
     .send({
       email: 'test@test.com',
       password: 'password'
-    }).expect(201);
-  
+    })
+    .expect(201);
+
   const response = await request(app)
     .post('/api/users/signout')
     .send({})
