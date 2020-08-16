@@ -1,7 +1,15 @@
 import mongoose from "mongoose";
 import express, { Request, Response } from "express";
-import { requireAuth, validateRequest } from "@bptickets/common";
+import {
+  requireAuth,
+  validateRequest,
+  NotFoundError,
+  OrderStatus,
+  BadRequestError,
+} from "@bptickets/common";
 import { body } from "express-validator";
+import { Ticket } from "../models/ticket";
+import { Order } from "../models/order";
 const router = express.Router();
 
 router.post(
@@ -16,6 +24,16 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
+    const { ticketId } = req.body;
+    const ticket = await Ticket.findById(ticketId);
+    if (!ticket) {
+      throw new NotFoundError();
+    }
+
+    const isReserved = await ticket.isReserved();
+    if (isReserved) {
+      throw new BadRequestError("Ticket is already reserved");
+    }
     res.send({});
   }
 );
